@@ -96,6 +96,7 @@ To compare CPU vs. GPU training speed, simply change one line in all the `cifar*
 
 and you will be using CPU for training.
 
+
 Training and Testing the "full" Model
 --------------------------------------
 
@@ -120,23 +121,24 @@ Use `classification.bin` to recognize a single picture
 ./examples/images/fish-bike.jpg (此处可以是自己的图片)
 ```
 
+
 About snapshot
 -------------------
 
-snapshot的存储格式有两种，分别是BINARUPROTO格式和HDF5格式。BINARYPROTO是一种二进制文件，并且可以通过修改snapshot_fomat来设置存储类型。
+Snapshot的存储格式有两种，分别是BINARYPROTO格式和HDF5格式。BINARYPROTO是一种二进制文件，并且可以通过修改snapshot_fomat来设置存储类型。
 
 该项的默认是BINARYPROTO。不管哪种形式，运行的过程都是类似的，都是从solver<Dtype>::Snapshot()函数进入，首先调用Net网络的方法，再操作网络中的每一层，最后调用write函数写入输出。
 
 * BINARYPROTO格式
-```
-#snapshot_format:BINARYPROTO
-```
-
-生成`.caffemodel`
+    ```
+    #snapshot_format:BINARYPROTO
+    ```
+    
+    生成`.caffemodel`
 
 * Hdf5格式
-```
-snapshot_format: HDF5
-```
+    ```
+    snapshot_format: HDF5
+    ```
 
-生成`.caffemodel.h5`
+    生成`.caffemodel.h5`
