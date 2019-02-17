@@ -1,4 +1,4 @@
-# reduce learning rate after 120 epochs (60000 iters) by factor 0f 10
+# reduce learning rate after 120 epochs (60000 iters) by factor of 10
 # then another factor of 10 after 10 more epochs (5000 iters)
 
 # The train/test net protocol buffer definition
@@ -21,7 +21,7 @@ display: 200
 max_iter: 60000
 # snapshot intermediate results
 snapshot: 10000
-snapshot_format: HDF5
+#snapshot_format: HDF5
 snapshot_prefix: "examples/cifar10/cifar10_full"
 # solver mode: CPU or GPU
 solver_mode: GPU

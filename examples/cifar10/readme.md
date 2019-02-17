@@ -95,3 +95,48 @@ To compare CPU vs. GPU training speed, simply change one line in all the `cifar*
     solver_mode: CPU
 
 and you will be using CPU for training.
+
+Training and Testing the "full" Model
+--------------------------------------
+
+full模型比quick模型迭代次数多，一共迭代70000次，前60000此学习率是0.001，中间5000次学习率是0.0001，最后5000次学习率是0.00001.
+
+Simply run `train_full.sh`, or the following command directly:
+
+    cd $CAFFE_ROOT
+    ./examples/cifar10/train_full.sh
+
+
+Test the model
+-------------------
+Use `classification.bin` to recognize a single picture
+
+```
+./build/examples/cpp_classification/classification.bin \
+./examples/cifar10/cifar10_full.prototxt \  (模型描述文件)
+./examples/cifar10/cifar10_full_iter_65000.caffemodel.h5 \  （训练好的caffemodel）
+./examples/cifar10/mean.binaryproto \  (图像均值文件)
+./data/cifar10/batches.meta.txt \ (图像类别标签信息) **注意：**  此标签可能是11类，因为最后一行有一个空格，需要删掉，否则和模型描述文件不符
+./examples/images/fish-bike.jpg (此处可以是自己的图片)
+```
+
+About snapshot
+-------------------
+
+snapshot的存储格式有两种，分别是BINARUPROTO格式和HDF5格式。BINARYPROTO是一种二进制文件，并且可以通过修改snapshot_fomat来设置存储类型。
+
+该项的默认是BINARYPROTO。不管哪种形式，运行的过程都是类似的，都是从solver<Dtype>::Snapshot()函数进入，首先调用Net网络的方法，再操作网络中的每一层，最后调用write函数写入输出。
+
+* BINARYPROTO格式
+```
+#snapshot_format:BINARYPROTO
+```
+
+生成`.caffemodel`
+
+* Hdf5格式
+```
+snapshot_format: HDF5
+```
+
+生成`.caffemodel.h5`
