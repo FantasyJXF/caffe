@@ -130,15 +130,82 @@ Snapshot的存储格式有两种，分别是BINARYPROTO格式和HDF5格式。BIN
 该项的默认是BINARYPROTO。不管哪种形式，运行的过程都是类似的，都是从solver<Dtype>::Snapshot()函数进入，首先调用Net网络的方法，再操作网络中的每一层，最后调用write函数写入输出。
 
 * BINARYPROTO格式
-    ```
-    #snapshot_format:BINARYPROTO
-    ```
+
+```
+#snapshot_format:BINARYPROTO
+```
     
-    生成`.caffemodel`
+生成`.caffemodel`
 
 * Hdf5格式
-    ```
-    snapshot_format: HDF5
-    ```
 
-    生成`.caffemodel.h5`
+```
+snapshot_format: HDF5
+```
+
+生成`.caffemodel.h5`
+
+
+Some Tricks
+-------------------
+
+1. save model architecture to image
+
+```
+python python/draw_net.py --rankdir TB examples/cifar10/cifar10_full_train_test.prototxt examples/cifar10/full_net.png
+```
+
+![full](./full_net.png)
+
+其中`--rankdir`表示图的方向,从上往下或者从左往右,默认从左往右
+
+2. 可视化训练过程
+
+caffe中其实已经自带了这样的小工具 caffe/tools/extra/parse_log.sh  caffe/tools/extra/extract_seconds.py和 caffe-master/tools/extra/plot_training_log.py.example ，使用方法如下：
+
+i) 记录训练日志
+
+在训练过程中的命令中加入一行参数,实现Log日志的记录
+
+```
+./build/tools/caffe train -solver examples/cifar10/cifar10_quick_solver.prototxt 2>&1 | tee examples/cifar10/quick.log
+```
+
+其中，`>&`表示所有的标准输出(stdout）和标准错误输出(stderr）都将被重定向到‘adamlenet.log’文件中，最后的&表示将命令放入后台执行。
+
+ii) 解析训练日志
+
+parse_log.py文件的作用就是：将你的日志文件分解成两个txt的文件。
+
+```
+./tools/extra/parse_log.sh quick.log
+```
+
+这样就会在当前文件夹下生成一个.train文件和一个.test文件
+
+iii) 生成图片
+
+执行:
+
+```
+./plot_training_log.py.example 6 train_loss.png quick.log
+```
+
+就可以生成训练过程中的Train loss  vs. Iters 曲线,其中6代表曲线类型， train_loss.png 代表保存的图片名称
+
+caffe中支持很多种曲线绘制，通过指定不同的类型参数即可，具体参数如下:
+
+```
+Notes: 
+    1. Supporting multiple logs. 
+    2. Log file name must end with the lower-cased ".log". 
+Supported chart types: 
+    0: Test accuracy  vs. Iters 
+    1: Test accuracy  vs. Seconds 
+    2: Test loss  vs. Iters 
+    3: Test loss  vs. Seconds 
+    4: Train learning rate  vs. Iters 
+    5: Train learning rate  vs. Seconds 
+    6: Train loss  vs. Iters 
+    7: Train loss  vs. Seconds 
+```
