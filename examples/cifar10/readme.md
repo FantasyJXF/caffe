@@ -171,7 +171,7 @@ i) 记录训练日志
 ./build/tools/caffe train -solver examples/cifar10/cifar10_quick_solver.prototxt 2>&1 | tee examples/cifar10/quick.log
 ```
 
-其中，`>&`表示所有的标准输出(stdout）和标准错误输出(stderr）都将被重定向到‘adamlenet.log’文件中，最后的&表示将命令放入后台执行。
+其中，`>&`表示所有的标准输出(stdout）和标准错误输出(`quick.log`文件中，最后的&表示将命令放入后台执行。
 
 ii) 解析训练日志
 
@@ -188,7 +188,7 @@ iii) 生成图片
 执行:
 
 ```
-./plot_training_log.py.example 6 train_loss.png quick.log
+./tools/extra/plot_training_log.py.example 6 train_loss.png quick.log
 ```
 
 就可以生成训练过程中的Train loss  vs. Iters 曲线,其中6代表曲线类型， train_loss.png 代表保存的图片名称
