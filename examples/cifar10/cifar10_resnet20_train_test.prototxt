@@ -38,7 +38,7 @@ layer {
 layer {
   name: "Convolution1"
   type: "Convolution"
-  bottom: "Data1"
+  bottom: "data"
   top: "Convolution1"
   param {
     lr_mult: 1
@@ -1411,14 +1411,14 @@ layer {
   name: "SoftmaxWithLoss1"
   type: "SoftmaxWithLoss"
   bottom: "InnerProduct1"
-  bottom: "Data2"
+  bottom: "label"
   top: "SoftmaxWithLoss1"
 }
 layer {
   name: "Accuracy1"
   type: "Accuracy"
   bottom: "InnerProduct1"
-  bottom: "Data2"
+  bottom: "label"
   top: "Accuracy1"
   include {
     phase: TEST
