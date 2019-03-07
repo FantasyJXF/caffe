@@ -4,7 +4,7 @@ set -e
 TOOLS=./build/tools
 
 $TOOLS/caffe train \
-  --solver=examples/cifar10/cifar10_resnet20_solver.prototxt  $@
+  --solver=examples/cifar10/cifar10_resnet20_solver.prototxt  2>&1 | tee examples/cifar10/res20.log $@
 
 # reduce learning rate by factor of 10 after 8 epochs
 #$TOOLS/caffe train \
